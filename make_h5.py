@@ -12,10 +12,10 @@ from common import *
 from synthgen import *
 from PIL import Image
 
-START_IMG_IDX = 4400
-NUM_IMG = -1
+START_IMG_IDX = 6001
+NUM_IMG = 2010
 
-INSTANCE_PER_IMAGE = 1
+INSTANCE_PER_IMAGE = 100
 SECS_PER_IMG = 5 #max time per image in seconds
 
 CONFIG_LOCAL = {'im_dir'   : 'bg_img',
@@ -26,7 +26,7 @@ CONFIG_LOCAL = {'im_dir'   : 'bg_img',
 
 def add_res_to_db(imgname, res, db):
     ninstance = len(res)
-    for i in xrange(ninstance):
+    for i in range(ninstance):
         dname = "%s_%d"%(imgname, i)
         db['data'].create_dataset(dname,data=res[i]['img'])
         db['data'][dname].attrs['charBB'] = res[i]['charBB']
@@ -47,6 +47,7 @@ def main(viz=False):
 
     imnames = sorted(depth_db.keys())
     N = len(imnames)
+    print(N)
 
     # restrict the image indices:
     start_idx = min(START_IMG_IDX, N-1)
@@ -65,6 +66,7 @@ def main(viz=False):
             # get the image:
             print(imdir+'/'+imname)
             img = Image.open(imdir+'/'+imname)
+            img=img.convert('RGB')
             if img is None:
                 continue
 
@@ -82,7 +84,7 @@ def main(viz=False):
             img = np.array(img.resize(sz,Image.ANTIALIAS))
             seg = np.array(Image.fromarray(seg).resize(sz,Image.NEAREST))
 
-            print colorize(Color.RED,'%d of %d'%(i,end_idx-1), bold=True)
+            print(colorize(Color.RED,'%d of %d'%(i,end_idx-1), bold=True))
             res = RV3.render_text(img,depth,seg,area,label,
                                   ninstance=INSTANCE_PER_IMAGE,viz=viz)
             if len(res) > 0:

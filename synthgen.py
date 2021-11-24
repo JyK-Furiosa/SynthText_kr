@@ -560,12 +560,12 @@ class RendererV3(object):
         f = open('char_text.txt', 'a')
         f1 = open('word_text.txt', 'a')
         for i in range(len(wrds)):
-            # f1.write(wrds[i].encode('utf-8'))
-            # f.write('\n')
+            f1.write(wrds[i])#.encode('utf-8'))
+            f1.write('\n')
             for j in range(len(wrds[i])):
-                f1.write(wrds[i].encode('utf-8'))
-                f1.write('\n')
-                f.write(wrds[i][j].encode('utf-8'))
+                # f1.write(wrds[i])#.encode('utf-8'))
+                # f1.write('\n')
+                f.write(wrds[i][j])#.encode('utf-8'))
                 f.write('\n')
 
 
@@ -713,5 +713,6 @@ class RendererV3(object):
                         if i < ninstance-1:
                             raw_input(colorize(Color.BLUE,'continue?',True))
                 except:
-                    print("THIS IS THE REASON WHY!!!!!")                 
+                    print("THIS IS THE REASON WHY!!!!!")            
+    
         return res

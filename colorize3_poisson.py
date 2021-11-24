@@ -19,7 +19,7 @@ def sample_weighted(p_dict):
     return ps[np.random.choice(len(ps),p=p_dict.values())]
 
 class Layer(object):
-
+     
     def __init__(self,alpha,color):
 
         # alpha for the whole image:
@@ -47,7 +47,8 @@ class FontColor(object):
 
     def __init__(self, col_file):
         with open(col_file,'rb') as f:
-            self.colorsRGB = cp.load(f)
+            self.colorsRGB = cp.load(f, encoding='bytes')
+            f.close()
             # u = pickle._Unpickler(f)
             # u.encoding = 'latin1'
             # p = u.load()
@@ -455,7 +456,7 @@ class Colorize(object):
 
             w,h = text_patch.shape
             bg = bg_arr[l[0]:l[0]+w,l[1]:l[1]+h,:]
-
+            
             rdr0 = self.process(text_patch, bg, hs[i])
             rendered.append(rdr0)
 

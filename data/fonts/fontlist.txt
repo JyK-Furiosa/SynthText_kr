@@ -1,9 +1,0 @@
-gulim/gulim.ttc
-batang.ttc
-NanumGothic.ttf
-NanumGothicExtraBold.ttf
-NanumGothicLight.ttf
-NanumGothicBold.ttf
-malgun.ttf
-malgunsl.ttf
-malgunbd.ttf

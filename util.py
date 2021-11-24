@@ -26,6 +26,7 @@ with open(char_freq_path,'rb') as f:
     # u = cp.Unpickler(f)
     # u.encoding = 'latin1'
     u = cp.load(f)
+    f.close()
 
 print(u)
 
@@ -35,5 +36,6 @@ with open(font_model_path,'rb') as f:
     # u = cp.Unpickler(f)
     # u.encoding = 'latin1'
     u = cp.load(f)
+    f.close()
 
 # print(u)

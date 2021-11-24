@@ -16,7 +16,8 @@ from pygame import freetype
 from PIL import Image
 import math
 from common import *
-
+import random
+import string
 # def is_korean(ch):
 #     if u'\uAC00' <= kr <=u'\uD7AF':
 #         return True
@@ -425,7 +426,7 @@ class FontState(object):
     random_kerning = 0.2
     random_kerning_amount = 0.1
 
-    def __init__(self, data_dir='mydata'):
+    def __init__(self, data_dir='data'):
     # def __init__(self, data_dir='ori_data'):
 
         # char_freq_path = osp.join(data_dir, 'models/char_freq.cp')        
@@ -455,6 +456,7 @@ class FontState(object):
         # get the model to convert from pixel to font pt size:
         with open(font_model_path,'rb') as f:
             self.font_model = cp.load(f)
+        #     f.close()
             
         # get the names of fonts to use:
         self.FONT_LIST = osp.join(data_dir, 'fonts/fontlist.txt')
@@ -540,15 +542,17 @@ class TextSource(object):
         """
         TXT_FN : path to file containing text data.
         """
+        self.spe_prob = 0.1
         self.min_nchar = min_nchar
         self.fdict = {'WORD':self.sample_word,
                       'LINE':self.sample_line,
                       'PARA':self.sample_para}
         self.txt = []
-        with open(fn,'r') as f:
+        with open(fn,'r', encoding='utf-8-sig') as f:
             for l in f.readlines():
                 line=l.strip()
-                line=line.decode('utf-8')
+                line = self.add_spe(line)
+                # line=line.decode('utf-8')
                 # print(line)
                 self.txt.append(line)
 
@@ -560,6 +564,20 @@ class TextSource(object):
 
         # probability to center-align a paragraph:
         self.center_para = 0.5
+
+    def add_spe(self, line):
+        newline = line
+        spe = string.printable[-38:-6]
+        c = 0
+        for char in line:
+            x = random.uniform(0, 1)
+            if x < self.spe_prob:
+                c += 1
+                sp = random.choice(spe)
+                newline = newline[:c] + sp + newline[c:]
+            c += 1
+        
+        return newline
 
 
     def check_symb_frac(self, txt, f=0.35):
